@@ -317,19 +317,18 @@ class NetworkTransactionReference {
 @JsonSerializable()
 class PaymentSource {
   /// The payment card used to fund the payment. Card can be a credit or debit card.
-  final Card card;
+  final Card? card;
 
-  const PaymentSource(this.card);
+  final Paypal? paypal;
+
+  const PaymentSource(this.card, this.paypal);
 
   Map<String, dynamic> toJson() => _$PaymentSourceToJson(this);
 
-  factory PaymentSource.fromJson(Map<String, dynamic> json) =>
-      _$PaymentSourceFromJson(json);
+  factory PaymentSource.fromJson(Map<String, dynamic> json) => _$PaymentSourceFromJson(json);
 
   @override
-  String toString() {
-    return 'PaymentSource{card: $card}';
-  }
+  String toString() => 'PaymentSource(card: $card, paypal: $paypal)';
 }
 
 /// A payment source with token
@@ -398,6 +397,45 @@ class Card {
   String toString() {
     return 'Card{name: $name, billingAddress: $billingAddress, '
         'lastDigits: $lastDigits, brand: $brand}';
+  }
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class Paypal {
+  /// The phone type.
+  final PhoneType? phoneType;
+
+  // atributes
+
+  /// The email address of the PayPal account holder.
+  final String? emailAddress;
+
+  /// The PayPal-assigned ID for the PayPal account holder.
+  final String? accountId;
+
+  /// The name of the PayPal account holder. Supports only the given_name and surname properties.
+  final Name? name;
+
+  // TODO: add phone_number https://developer.paypal.com/docs/api/orders/v2/#orders_create!c=200&path=payment_source/paypal/phone_number&t=response
+
+  /// The birth date of the PayPal account holder in YYYY-MM-DD format.
+  final String? birthDate;
+  // // TODO: add tax_info https://developer.paypal.com/docs/api/orders/v2/#orders_create!c=200&path=payment_source/paypal/tax_info&t=response
+  final AddressPortable? address;
+
+  const Paypal({
+    this.phoneType,
+    this.emailAddress,
+    this.accountId,
+    this.name,
+    this.birthDate,
+    this.address,
+  });
+
+  @override
+  String toString() {
+    return 'Paypal{phoneType: $phoneType, emailAddress: $emailAddress, accountId: $accountId, name: $name, '
+        ' birthDate: $birthDate, address: $address}';
   }
 }
 

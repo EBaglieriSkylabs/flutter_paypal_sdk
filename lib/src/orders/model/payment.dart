@@ -1,5 +1,5 @@
+import 'package:flutter_paypal_sdk/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:paypal_sdk/core.dart';
 
 part 'payment.g.dart';
 
@@ -229,13 +229,11 @@ class PaymentMethod {
   /// supports the following SEC codes.
   final StandardEntryClassCode? standardEntryClassCode;
 
-  const PaymentMethod(
-      {this.payerSelected, this.payeePreferred, this.standardEntryClassCode});
+  const PaymentMethod({this.payerSelected, this.payeePreferred, this.standardEntryClassCode});
 
   Map<String, dynamic> toJson() => _$PaymentMethodToJson(this);
 
-  factory PaymentMethod.fromJson(Map<String, dynamic> json) =>
-      _$PaymentMethodFromJson(json);
+  factory PaymentMethod.fromJson(Map<String, dynamic> json) => _$PaymentMethodFromJson(json);
 
   @override
   String toString() {
@@ -480,8 +478,7 @@ class AuthorizationWithAdditionalData {
 
   const AuthorizationWithAdditionalData(this.processorResponse);
 
-  Map<String, dynamic> toJson() =>
-      _$AuthorizationWithAdditionalDataToJson(this);
+  Map<String, dynamic> toJson() => _$AuthorizationWithAdditionalDataToJson(this);
 
   factory AuthorizationWithAdditionalData.fromJson(Map<String, dynamic> json) =>
       _$AuthorizationWithAdditionalDataFromJson(json);
@@ -568,8 +565,7 @@ class Capture {
 
   Map<String, dynamic> toJson() => _$CaptureToJson(this);
 
-  factory Capture.fromJson(Map<String, dynamic> json) =>
-      _$CaptureFromJson(json);
+  factory Capture.fromJson(Map<String, dynamic> json) => _$CaptureFromJson(json);
 
   @override
   String toString() {
@@ -660,8 +656,7 @@ class RefundStatus {
 
   Map<String, dynamic> toJson() => _$RefundStatusToJson(this);
 
-  factory RefundStatus.fromJson(Map<String, dynamic> json) =>
-      _$RefundStatusFromJson(json);
+  factory RefundStatus.fromJson(Map<String, dynamic> json) => _$RefundStatusFromJson(json);
 
   @override
   String toString() {
@@ -684,8 +679,7 @@ class SellerProtection {
 
   Map<String, dynamic> toJson() => _$SellerProtectionToJson(this);
 
-  factory SellerProtection.fromJson(Map<String, dynamic> json) =>
-      _$SellerProtectionFromJson(json);
+  factory SellerProtection.fromJson(Map<String, dynamic> json) => _$SellerProtectionFromJson(json);
 
   @override
   String toString() {
@@ -703,8 +697,7 @@ class DisputeCategory {
 
   Map<String, dynamic> toJson() => _$DisputeCategoryToJson(this);
 
-  factory DisputeCategory.fromJson(Map<String, dynamic> json) =>
-      _$DisputeCategoryFromJson(json);
+  factory DisputeCategory.fromJson(Map<String, dynamic> json) => _$DisputeCategoryFromJson(json);
 
   @override
   String toString() {

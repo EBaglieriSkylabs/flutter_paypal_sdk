@@ -432,6 +432,10 @@ class Paypal {
     this.address,
   });
 
+  Map<String, dynamic> toJson() => _$PaypalToJson(this);
+
+  factory Paypal.fromJson(Map<String, dynamic> json) => _$PaypalFromJson(json);
+
   @override
   String toString() {
     return 'Paypal{phoneType: $phoneType, emailAddress: $emailAddress, accountId: $accountId, name: $name, '

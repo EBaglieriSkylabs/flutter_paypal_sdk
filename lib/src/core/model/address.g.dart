@@ -36,13 +36,13 @@ Map<String, dynamic> _$AddressDetailsToJson(AddressDetails instance) {
 
 AddressPortable _$AddressPortableFromJson(Map<String, dynamic> json) =>
     AddressPortable(
-      json['address_line1'] as String?,
-      json['address_line2'] as String?,
-      json['address_line3'] as String?,
-      json['admin_area4'] as String?,
-      json['admin_area3'] as String?,
-      json['admin_area2'] as String?,
-      json['admin_area1'] as String?,
+      json['address_line_1'] as String?,
+      json['address_line_2'] as String?,
+      json['address_line_3'] as String?,
+      json['admin_area_4'] as String?,
+      json['admin_area_3'] as String?,
+      json['admin_area_2'] as String?,
+      json['admin_area_1'] as String?,
       json['postal_code'] as String?,
       json['country_code'] as String?,
       json['address_details'] == null
@@ -60,13 +60,13 @@ Map<String, dynamic> _$AddressPortableToJson(AddressPortable instance) {
     }
   }
 
-  writeNotNull('address_line1', instance.addressLine1);
-  writeNotNull('address_line2', instance.addressLine2);
-  writeNotNull('address_line3', instance.addressLine3);
-  writeNotNull('admin_area4', instance.adminArea4);
-  writeNotNull('admin_area3', instance.adminArea3);
-  writeNotNull('admin_area2', instance.adminArea2);
-  writeNotNull('admin_area1', instance.adminArea1);
+  writeNotNull('address_line_1', instance.addressLine1);
+  writeNotNull('address_line_2', instance.addressLine2);
+  writeNotNull('address_line_3', instance.addressLine3);
+  writeNotNull('admin_area_4', instance.adminArea4);
+  writeNotNull('admin_area_3', instance.adminArea3);
+  writeNotNull('admin_area_2', instance.adminArea2);
+  writeNotNull('admin_area_1', instance.adminArea1);
   writeNotNull('postal_code', instance.postalCode);
   writeNotNull('country_code', instance.countryCode);
   writeNotNull('address_details', instance.addressDetails);

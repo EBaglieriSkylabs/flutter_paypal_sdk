@@ -46,8 +46,10 @@ Map<String, dynamic> _$PurchaseUnitRequestToJson(PurchaseUnitRequest instance) {
 
 PurchaseUnit _$PurchaseUnitFromJson(Map<String, dynamic> json) => PurchaseUnit(
       referenceId: json['reference_id'] as String?,
-      amount:
-          AmountWithBreakdown.fromJson(json['amount'] as Map<String, dynamic>),
+      amount: json['amount'] == null
+          ? null
+          : AmountWithBreakdown.fromJson(
+              json['amount'] as Map<String, dynamic>),
       payee: json['payee'] == null
           ? null
           : Payee.fromJson(json['payee'] as Map<String, dynamic>),
@@ -82,7 +84,7 @@ Map<String, dynamic> _$PurchaseUnitToJson(PurchaseUnit instance) {
   }
 
   writeNotNull('reference_id', instance.referenceId);
-  val['amount'] = instance.amount;
+  writeNotNull('amount', instance.amount);
   writeNotNull('payee', instance.payee);
   writeNotNull('payment_instruction', instance.paymentInstruction);
   writeNotNull('description', instance.description);

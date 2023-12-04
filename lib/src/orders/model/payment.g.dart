@@ -137,13 +137,27 @@ const _$NetworkEnumMap = {
 
 PaymentSource _$PaymentSourceFromJson(Map<String, dynamic> json) =>
     PaymentSource(
-      Card.fromJson(json['card'] as Map<String, dynamic>),
+      json['card'] == null
+          ? null
+          : Card.fromJson(json['card'] as Map<String, dynamic>),
+      json['paypal'] == null
+          ? null
+          : Paypal.fromJson(json['paypal'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$PaymentSourceToJson(PaymentSource instance) =>
-    <String, dynamic>{
-      'card': instance.card,
-    };
+Map<String, dynamic> _$PaymentSourceToJson(PaymentSource instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('card', instance.card);
+  writeNotNull('paypal', instance.paypal);
+  return val;
+}
 
 PaymentSourceToken _$PaymentSourceTokenFromJson(Map<String, dynamic> json) =>
     PaymentSourceToken(
@@ -190,6 +204,46 @@ Map<String, dynamic> _$CardToJson(Card instance) {
   writeNotNull('brand', _$NetworkEnumMap[instance.brand]);
   return val;
 }
+
+Paypal _$PaypalFromJson(Map<String, dynamic> json) => Paypal(
+      phoneType: $enumDecodeNullable(_$PhoneTypeEnumMap, json['phone_type']),
+      emailAddress: json['email_address'] as String?,
+      accountId: json['account_id'] as String?,
+      name: json['name'] == null
+          ? null
+          : Name.fromJson(json['name'] as Map<String, dynamic>),
+      birthDate: json['birth_date'] as String?,
+      address: json['address'] == null
+          ? null
+          : AddressPortable.fromJson(json['address'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PaypalToJson(Paypal instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('phone_type', _$PhoneTypeEnumMap[instance.phoneType]);
+  writeNotNull('email_address', instance.emailAddress);
+  writeNotNull('account_id', instance.accountId);
+  writeNotNull('name', instance.name);
+  writeNotNull('birth_date', instance.birthDate);
+  writeNotNull('address', instance.address);
+  return val;
+}
+
+const _$PhoneTypeEnumMap = {
+  PhoneType.fax: 'FAX',
+  PhoneType.home: 'HOME',
+  PhoneType.mobile: 'MOBILE',
+  PhoneType.other: 'OTHER',
+  PhoneType.pager: 'PAGER',
+  PhoneType.work: 'WORK',
+};
 
 PaymentCollection _$PaymentCollectionFromJson(Map<String, dynamic> json) =>
     PaymentCollection(

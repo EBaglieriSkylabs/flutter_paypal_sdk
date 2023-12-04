@@ -27,13 +27,12 @@ class AddressDetails {
   /// with a common name. Can be a flat, story, floor, room, or apartment.
   final String? subBuilding;
 
-  const AddressDetails(this.streetNumber, this.streetName, this.streetType,
-      this.deliveryService, this.buildingName, this.subBuilding);
+  const AddressDetails(this.streetNumber, this.streetName, this.streetType, this.deliveryService,
+      this.buildingName, this.subBuilding);
 
   Map<String, dynamic> toJson() => _$AddressDetailsToJson(this);
 
-  factory AddressDetails.fromJson(Map<String, dynamic> json) =>
-      _$AddressDetailsFromJson(json);
+  factory AddressDetails.fromJson(Map<String, dynamic> json) => _$AddressDetailsFromJson(json);
 
   @override
   String toString() {
@@ -49,14 +48,17 @@ class AddressPortable {
   /// The first line of the address. For example, number or street. For example,
   /// 173 Drury Lane. Required for data entry and compliance and risk checks.
   /// Must contain the full address.
+  @JsonKey(name: 'address_line_1')
   final String? addressLine1;
 
   /// The second line of the address. For example, suite or apartment number.
+  @JsonKey(name: 'address_line_2')
   final String? addressLine2;
 
   /// The third line of the address, if needed. For example, a street complement
   /// for Brazil, direction text, such as next to Walmart, or a landmark in an
   /// Indian address.
+  @JsonKey(name: 'address_line_3')
   final String? addressLine3;
 
   /// The neighborhood, ward, or district. Smaller than admin_area_level_3 or
@@ -70,6 +72,7 @@ class AddressPortable {
   /// The fine-grained administrative levels in China.
   /// </li>
   /// </ul>
+  @JsonKey(name: 'admin_area_4')
   final String? adminArea4;
 
   /// A sub-locality, suburb, neighborhood, or district.
@@ -83,9 +86,11 @@ class AddressPortable {
   /// available but a sub-locality or district can be a very small area.
   /// </li>
   /// </ul>
+  @JsonKey(name: 'admin_area_3')
   final String? adminArea3;
 
   /// A city, town, or village. Smaller than admin_area_level_1.
+  @JsonKey(name: 'admin_area_2')
   final String? adminArea2;
 
   /// The highest level sub-division in a country, which is usually a province,
@@ -108,6 +113,7 @@ class AddressPortable {
   /// Switzerland. A kanton.
   /// </li>
   /// </ul>
+  @JsonKey(name: 'admin_area_1')
   final String? adminArea1;
 
   /// The postal code, which is the zip code or equivalent. Typically required
@@ -141,8 +147,7 @@ class AddressPortable {
 
   Map<String, dynamic> toJson() => _$AddressPortableToJson(this);
 
-  factory AddressPortable.fromJson(Map<String, dynamic> json) =>
-      _$AddressPortableFromJson(json);
+  factory AddressPortable.fromJson(Map<String, dynamic> json) => _$AddressPortableFromJson(json);
 
   @override
   String toString() {

@@ -1,6 +1,6 @@
 name: flutter_paypal_sdk
 description: PayPal SDK for facilitating integration with PayPal REST APIs
-homepage: https://github.com/Omnimind-Ltd/paypal-sdk
+homepage: https://github.com/EBaglieriSkylabs/flutter_paypal_sdk
 version: 1.0.8
 
 environment:

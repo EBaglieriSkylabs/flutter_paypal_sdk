@@ -97,7 +97,7 @@ class PurchaseUnit {
   /// insurance minus shipping_discount minus discount. The amount must be a
   /// positive number. For listed of supported currencies and decimal precision,
   /// see the PayPal REST APIs Currency Codes.
-  final AmountWithBreakdown amount;
+  final AmountWithBreakdown? amount;
 
   /// The merchant who receives payment for this transaction.
   final Payee? payee;

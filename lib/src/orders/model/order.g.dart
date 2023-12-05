@@ -19,7 +19,7 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       purchaseUnits: (json['purchase_units'] as List<dynamic>?)
           ?.map((e) => PurchaseUnit.fromJson(e as Map<String, dynamic>))
           .toList(),
-      status: json['status'] as String?,
+      status: $enumDecodeNullable(_$OrderStatusEnumMap, json['status']),
       createTime: json['create_time'] as String?,
       updateTime: json['update_time'] as String?,
       links: (json['links'] as List<dynamic>?)
@@ -41,12 +41,21 @@ Map<String, dynamic> _$OrderToJson(Order instance) {
   writeNotNull('intent', instance.intent);
   writeNotNull('payer', instance.payer);
   writeNotNull('purchase_units', instance.purchaseUnits);
-  writeNotNull('status', instance.status);
+  writeNotNull('status', _$OrderStatusEnumMap[instance.status]);
   writeNotNull('create_time', instance.createTime);
   writeNotNull('update_time', instance.updateTime);
   writeNotNull('links', instance.links);
   return val;
 }
+
+const _$OrderStatusEnumMap = {
+  OrderStatus.created: 'CREATED',
+  OrderStatus.saved: 'SAVED',
+  OrderStatus.approved: 'APPROVED',
+  OrderStatus.voided: 'VOIDED',
+  OrderStatus.completed: 'COMPLETED',
+  OrderStatus.payerActionRequired: 'PAYER_ACTION_REQUIRED',
+};
 
 OrderRequest _$OrderRequestFromJson(Map<String, dynamic> json) => OrderRequest(
       intent: $enumDecode(_$OrderRequestIntentEnumMap, json['intent']),
@@ -60,6 +69,10 @@ OrderRequest _$OrderRequestFromJson(Map<String, dynamic> json) => OrderRequest(
           ? null
           : ApplicationContext.fromJson(
               json['application_context'] as Map<String, dynamic>),
+      paymentSource: json['payment_source'] == null
+          ? null
+          : PaymentSourceRequest.fromJson(
+              json['payment_source'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$OrderRequestToJson(OrderRequest instance) {
@@ -76,6 +89,7 @@ Map<String, dynamic> _$OrderRequestToJson(OrderRequest instance) {
   writeNotNull('payer', instance.payer);
   val['purchase_units'] = instance.purchaseUnits;
   writeNotNull('application_context', instance.applicationContext);
+  writeNotNull('payment_source', instance.paymentSource);
   return val;
 }
 

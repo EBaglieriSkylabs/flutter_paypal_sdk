@@ -9,6 +9,7 @@
 library orders;
 
 export 'src/orders/model/amount.dart';
+export 'src/orders/model/experience_context.dart';
 export 'src/orders/model/item.dart';
 export 'src/orders/model/order.dart';
 export 'src/orders/model/payer.dart';

@@ -30,6 +30,9 @@ class PurchaseUnitRequest {
   /// Authorizing an Order.
   final PaymentInstruction? paymentInstruction;
 
+  /// The shipping address and method.
+  final ShippingDetail? shipping;
+
   /// The purchase description.
   final String? description;
 
@@ -62,6 +65,7 @@ class PurchaseUnitRequest {
     required this.amount,
     this.payee,
     this.paymentInstruction,
+    this.shipping,
     this.description,
     this.customId,
     this.invoiceId,

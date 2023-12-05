@@ -89,6 +89,36 @@ enum UserAction {
   payNow,
 }
 
+/// The order status.
+enum OrderStatus {
+  /// The order was created with the specified context.
+  @JsonValue('CREATED')
+  created,
+
+  /// The order was saved and persisted.
+  /// The order status continues to be in progress until a capture is made with final_capture = true for all purchase units within the order.
+  @JsonValue('SAVED')
+  saved,
+
+  /// The customer approved the payment through the PayPal wallet or another form of guest or unbranded payment.
+  /// For example, a card, bank account, or so on.
+  @JsonValue('APPROVED')
+  approved,
+
+  /// All purchase units in the order are voided.
+  @JsonValue('VOIDED')
+  voided,
+
+  /// The payment was authorized or the authorized payment was captured for the order.
+  @JsonValue('COMPLETED')
+  completed,
+
+  /// The order requires an action from the payer (e.g. 3DS authentication).
+  /// Redirect the payer to the "rel":"payer-action" HATEOAS link returned as part of the response prior to authorizing or capturing the order.
+  @JsonValue('PAYER_ACTION_REQUIRED')
+  payerActionRequired,
+}
+
 /// An order.
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Order {
@@ -112,7 +142,7 @@ class Order {
   final List<PurchaseUnit>? purchaseUnits;
 
   /// The order status.
-  final String? status;
+  final OrderStatus? status;
 
   /// The date and time when the transaction occurred, in
   /// <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">
@@ -170,8 +200,16 @@ class OrderRequest {
   /// with PayPal.
   final ApplicationContext? applicationContext;
 
-  const OrderRequest(
-      {required this.intent, this.payer, required this.purchaseUnits, this.applicationContext});
+  /// The payment source definition.
+  final PaymentSourceRequest? paymentSource;
+
+  const OrderRequest({
+    required this.intent,
+    this.payer,
+    required this.purchaseUnits,
+    this.applicationContext,
+    this.paymentSource,
+  });
 
   Map<String, dynamic> toJson() => _$OrderRequestToJson(this);
 
@@ -187,14 +225,20 @@ class OrderRequest {
 @JsonSerializable(fieldRename: FieldRename.snake)
 class ApplicationContext {
   /// The label that overrides the business name in the PayPal account on the PayPal site.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final String? brandName;
 
   /// The BCP 47-formatted locale of pages that the PayPal payment experience shows.
   /// PayPal supports a five-character code. For example, da-DK, he-IL, id-ID,
   /// ja-JP, no-NO, pt-BR, ru-RU, sv-SE, th-TH, zh-CN, zh-HK, or zh-TW.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final String? locale;
 
   /// The type of landing page to show on the PayPal site for customer checkout.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final LandingPage? landingPage;
 
   /// The shipping preference:
@@ -209,18 +253,28 @@ class ApplicationContext {
   /// Restricts the customer from changing the address during the payment-approval process.
   /// </li>
   /// </ul>
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final ShippingPreference? shippingPreference;
 
   /// Configures a Continue or Pay Now checkout flow.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final UserAction? userAction;
 
   /// The customer and merchant payment preferences.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final PaymentMethod? paymentMethod;
 
   /// The URL where the customer is redirected after the customer approves the payment.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final String? returnUrl;
 
   /// The URL where the customer is redirected after the customer cancels the payment.
+  @Deprecated(
+      'The fields in ApplicationContext are now available in the ExperienceContext object under the paymentSource')
   final String? cancelUrl;
 
   /// Provides additional details to process a payment using a payment_source that

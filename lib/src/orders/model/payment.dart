@@ -1,4 +1,5 @@
 import 'package:flutter_paypal_sdk/core.dart';
+import 'package:flutter_paypal_sdk/src/orders/model/experience_context.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'payment.g.dart';
@@ -6,11 +7,13 @@ part 'payment.g.dart';
 /// The merchant-preferred payment methods.
 enum PayeePreferred {
   /// Accepts any type of payment from the customer.
+  @JsonValue('UNRESTRICTED')
   unrestricted,
 
   /// Accepts only immediate payment from the customer. For example, credit card,
   /// PayPal balance, or instant ACH. Ensures that at the time of capture, the
   /// payment does not have the `pending` status.
+  @JsonValue('IMMEDIATE_PAYMENT_REQUIRED')
   immediatePaymentRequired,
 }
 
@@ -313,20 +316,60 @@ class NetworkTransactionReference {
 
 /// A payment source
 @JsonSerializable()
+class PaymentSourceRequest {
+  /// Indicates that PayPal Wallet is the payment source. Main use of this selection is to provide additional instructions associated with this choice like vaulting.
+  final PaypalSourceRequest? paypal;
+
+  const PaymentSourceRequest(this.paypal);
+
+  Map<String, dynamic> toJson() => _$PaymentSourceRequestToJson(this);
+
+  factory PaymentSourceRequest.fromJson(Map<String, dynamic> json) =>
+      _$PaymentSourceRequestFromJson(json);
+
+  factory PaymentSourceRequest.paypal({
+    ExperienceContext? experienceContext,
+    String? billingAgreementId,
+    String? vaultId,
+    String? emailAddress,
+    Name? name,
+    PhoneWithType? phone,
+    String? birthDate,
+    AddressPortable? address,
+  }) {
+    final paypal = PaypalSourceRequest(
+      experienceContext: experienceContext,
+      billingAgreementId: billingAgreementId,
+      vaultId: vaultId,
+      emailAddress: emailAddress,
+      name: name,
+      phone: phone,
+      birthDate: birthDate,
+      address: address,
+    );
+    return PaymentSourceRequest(paypal);
+  }
+
+  @override
+  String toString() => 'PaymentSource(paypal: $paypal)';
+}
+
+/// A payment source
+@JsonSerializable()
 class PaymentSource {
   /// The payment card used to fund the payment. Card can be a credit or debit card.
-  final Card card;
+  final CardPaymentSource? card;
 
-  const PaymentSource(this.card);
+  final PaypalSource? paypal;
+
+  const PaymentSource(this.card, this.paypal);
 
   Map<String, dynamic> toJson() => _$PaymentSourceToJson(this);
 
   factory PaymentSource.fromJson(Map<String, dynamic> json) => _$PaymentSourceFromJson(json);
 
   @override
-  String toString() {
-    return 'PaymentSource{card: $card}';
-  }
+  String toString() => 'PaymentSource(card: $card, paypal: $paypal)';
 }
 
 /// A payment source with token
@@ -371,7 +414,7 @@ class Token {
 
 /// A payment card.
 @JsonSerializable(fieldRename: FieldRename.snake)
-class Card {
+class CardPaymentSource {
   /// The card holder's name as it appears on the card.
   final String? name;
 
@@ -385,16 +428,120 @@ class Card {
   /// The card brand or network. Typically used in the response.
   final Network? brand;
 
-  Card({this.name, this.billingAddress, this.lastDigits, this.brand});
+  CardPaymentSource({this.name, this.billingAddress, this.lastDigits, this.brand});
 
-  Map<String, dynamic> toJson() => _$CardToJson(this);
+  Map<String, dynamic> toJson() => _$CardPaymentSourceToJson(this);
 
-  factory Card.fromJson(Map<String, dynamic> json) => _$CardFromJson(json);
+  factory CardPaymentSource.fromJson(Map<String, dynamic> json) =>
+      _$CardPaymentSourceFromJson(json);
 
   @override
   String toString() {
     return 'Card{name: $name, billingAddress: $billingAddress, '
         'lastDigits: $lastDigits, brand: $brand}';
+  }
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class PaypalSourceRequest {
+  PaypalSourceRequest({
+    this.experienceContext,
+    this.billingAgreementId,
+    this.vaultId,
+    this.emailAddress,
+    this.name,
+    this.phone,
+    this.birthDate,
+    this.address,
+  });
+
+  /// Customizes the payer experience during the approval process for payment with PayPal.
+  final ExperienceContext? experienceContext;
+
+  /// The PayPal billing agreement ID.
+  /// References an approved recurring payment for goods or services.
+  final String? billingAgreementId;
+
+  /// The PayPal-generated ID for the payment_source stored within the Vault.
+  final String? vaultId;
+
+  /// The email address of the PayPal account holder.
+  final String? emailAddress;
+
+  /// The name of the PayPal account holder.
+  /// Supports only the given_name and surname properties.
+  final Name? name;
+
+  /// The phone number of the customer.
+  /// Available only when you enable the Contact Telephone Number
+  final PhoneWithType? phone;
+
+  /// The birth date of the PayPal account holder in YYYY-MM-DD format.
+  final String? birthDate;
+  // TODO: add tax_info
+
+  /// The address of the PayPal account holder.
+  /// Also referred to as the billing address of the customer.
+  final AddressPortable? address;
+
+  // TODO: attributes
+
+  Map<String, dynamic> toJson() => _$PaypalSourceRequestToJson(this);
+
+  factory PaypalSourceRequest.fromJson(Map<String, dynamic> json) =>
+      _$PaypalSourceRequestFromJson(json);
+
+  @override
+  String toString() {
+    return 'PaypalSourceRequest{billingAgreementId: $billingAgreementId, vaultId: $vaultId, '
+        'emailAddress: $emailAddress, name: $name, phone: $phone, birthDate: $birthDate, address: $address}';
+  }
+}
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class PaypalSource {
+  /// The phone type.
+  final PhoneType? phoneType;
+
+  // atributes
+
+  /// The email address of the PayPal account holder.
+  final String? emailAddress;
+
+  /// The PayPal-assigned ID for the PayPal account holder.
+  final String? accountId;
+
+  /// The name of the PayPal account holder. Supports only the given_name and surname properties.
+  final Name? name;
+
+  /// The phone number, in its canonical international E.164 numbering plan format.
+  /// Available only when you enable the Contact Telephone Number option in the Profile & Settings for the merchant's PayPal account.
+  /// Supports only the national_number property.
+  final Phone? phoneNumber;
+
+  /// The birth date of the PayPal account holder in YYYY-MM-DD format.
+  final String? birthDate;
+  // TODO: add tax_info https://developer.paypal.com/docs/api/orders/v2/#orders_create!c=200&path=payment_source/paypal/tax_info&t=response
+  final AddressPortable? address;
+
+  const PaypalSource({
+    this.phoneType,
+    this.emailAddress,
+    this.accountId,
+    this.name,
+    this.phoneNumber,
+    this.birthDate,
+    this.address,
+  });
+
+  Map<String, dynamic> toJson() => _$PaypalSourceToJson(this);
+
+  factory PaypalSource.fromJson(Map<String, dynamic> json) => _$PaypalSourceFromJson(json);
+
+  @override
+  String toString() {
+    return 'Paypal{phoneType: $phoneType, emailAddress: $emailAddress, accountId: $accountId, name: $name, '
+        ' birthDate: $birthDate, address: $address}';
   }
 }
 

@@ -30,6 +30,9 @@ class PurchaseUnitRequest {
   /// Authorizing an Order.
   final PaymentInstruction? paymentInstruction;
 
+  /// The shipping address and method.
+  final ShippingDetail? shipping;
+
   /// The purchase description.
   final String? description;
 
@@ -62,6 +65,7 @@ class PurchaseUnitRequest {
     required this.amount,
     this.payee,
     this.paymentInstruction,
+    this.shipping,
     this.description,
     this.customId,
     this.invoiceId,
@@ -97,7 +101,7 @@ class PurchaseUnit {
   /// insurance minus shipping_discount minus discount. The amount must be a
   /// positive number. For listed of supported currencies and decimal precision,
   /// see the PayPal REST APIs Currency Codes.
-  final AmountWithBreakdown amount;
+  final AmountWithBreakdown? amount;
 
   /// The merchant who receives payment for this transaction.
   final Payee? payee;
